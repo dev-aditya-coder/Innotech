@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Friction Layer</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Header -->
+    <header class="popup-header">
+      <div class="brand">
+        <img src="../assets/icons/icon32.png" alt="Friction Layer Logo" class="brand-logo" width="28" height="28">
+        <div class="brand-text">
+          <div class="brand-title">
+            <span class="title-primary">Friction</span>
+            <span class="title-accent">Layer</span>
+          </div>
+          <span class="version-tag">v1.0.0</span>
+        </div>
+      </div>
+      <!-- Master Switch -->
+      <div class="master-switch-wrapper">
+        <label class="switch" title="Master toggle to enable or pause all Friction Layer features">
+          <input type="checkbox" id="masterToggle" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+    </header>
+
+    <!-- Page Context & Status Card -->
+    <section class="status-card" id="statusCard">
+      <div class="status-indicator-row">
+        <div class="status-indicator">
+          <span class="status-dot" id="statusDot"></span>
+          <span class="status-text" id="statusText">Detecting page...</span>
+        </div>
+        <div class="page-type-badge" id="pageTypeBadge">Analyzing</div>
+      </div>
+      <div class="status-metric-row" id="metricRow">
+        <div class="metric-item">
+          <span class="metric-value" id="hiddenCountMetric">0</span>
+          <span class="metric-label">Items Filtered</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-value" id="filterStatusMetric">Active</span>
+          <span class="metric-label">Mode</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Feature Switches List -->
+    <section class="features-section">
+      <div class="section-title">Protective Layers</div>
+
+      <!-- Feature 1: Search -->
+      <div class="feature-card">
+        <div class="feature-info">
+          <div class="feature-name">Search Relevance Filter</div>
+          <div class="feature-desc">Estimates query match & hides low-relevance results</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="toggleSearch" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <!-- Feature 2: Recommendations -->
+      <div class="feature-card">
+        <div class="feature-info">
+          <div class="feature-name">Recommendation Filter</div>
+          <div class="feature-desc">Blocks clickbait, keywords & focus mode</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="toggleRecommendations">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <!-- Feature 3: Quality -->
+      <div class="feature-card">
+        <div class="feature-info">
+          <div class="feature-name">Quality Indicators</div>
+          <div class="feature-desc">Page-level evidence & optional DOM sorting</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="toggleQuality" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <!-- Feature 4: Security Link-Risk -->
+      <div class="feature-card">
+        <div class="feature-info">
+          <div class="feature-name">Spam & Scam Protection</div>
+          <div class="feature-desc">Heuristic warnings for deceptive URLs</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="toggleSecurity" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <!-- Feature 5: Clutter & Ads -->
+      <div class="feature-card">
+        <div class="feature-info">
+          <div class="feature-name">Ad & Clutter Filtering</div>
+          <div class="feature-desc">Hides marked sponsored blocks & overlays</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="toggleClutter">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </section>
+
+    <!-- Quick Tab Controls -->
+    <section class="actions-section">
+      <button class="btn btn-secondary" id="btnRestorePage" title="Temporarily reveal all hidden elements on this page">
+        <span>👁️</span> Restore Hidden
+      </button>
+      <button class="btn btn-secondary" id="btnReprocessPage" title="Re-evaluate all elements on the current page">
+        <span>🔄</span> Reprocess
+      </button>
+      <button class="btn btn-primary" id="btnOpenOptions" title="Configure thresholds, keywords, and privacy settings">
+        <span>⚙️</span> Settings
+      </button>
+    </section>
+
+    <!-- Feedback Toast -->
+    <div class="toast" id="popupToast"></div>
+
+    <!-- Footer -->
+    <footer class="popup-footer">
+      <span class="privacy-note">🔒 Local Processing • Zero Data Leaves Browser</span>
+    </footer>
+  </div>
+
+  <script src="../core/messaging.js"></script>
+  <script src="../core/settings.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
