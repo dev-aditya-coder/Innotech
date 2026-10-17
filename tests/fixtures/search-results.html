@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Friction Layer - Synthetic Demo Fixture</title>
+  <style>
+    :root {
+      --bg: #0a1128;
+      --surface: #0f172a;
+      --card: #1e293b;
+      --border: #334155;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --teal: #14b8a6;
+      --teal-glow: #2dd4bf;
+      --amber: #f59e0b;
+      --red: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 24px;
+      line-height: 1.5;
+    }
+    .demo-container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .disclaimer-banner {
+      background: #451a03;
+      border: 1px solid #b45309;
+      color: #fef3c7;
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .interactive-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .panel-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--teal-glow);
+    }
+    .controls-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px;
+    }
+    .control-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+    .control-item input[type="range"] {
+      accent-color: var(--teal);
+      cursor: pointer;
+    }
+    .btn {
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      transition: all 0.15s;
+    }
+    .btn:hover {
+      background: #334155;
+      border-color: var(--teal);
+    }
+    .results-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .search-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .search-card.friction-hidden {
+      display: none !important;
+    }
+    .reveal-mode .search-card.friction-hidden {
+      display: block !important;
+      opacity: 0.6;
+      border-left: 3px dashed var(--amber);
+    }
+    .result-domain {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .result-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: #38bdf8;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 6px;
+    }
+    .result-title:hover {
+      text-decoration: underline;
+    }
+    .result-snippet {
+      font-size: 13.5px;
+      color: #cbd5e1;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-right: 8px;
+    }
+    .badge-high { background: #0f766e; color: #fff; }
+    .badge-med { background: #0369a1; color: #fff; }
+    .badge-low { background: #b45309; color: #fff; }
+    .badge-sponsored { background: #701a75; color: #f5d0fe; border: 1px solid #c026d3; }
+    .badge-quality { background: #1e293b; color: #94a3b8; border: 1px solid #334155; }
+    .badge-risk { background: #7f1d1d; color: #fecaca; border: 1px solid #dc2626; cursor: pointer; }
+    .metric-pill {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--teal-glow);
+      background: rgba(20, 184, 166, 0.15);
+      padding: 3px 8px;
+      border-radius: 12px;
+      border: 1px solid rgba(20, 184, 166, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-container">
+    <!-- Disclaimer -->
+    <div class="disclaimer-banner">
+      <span style="font-size: 18px;">⚠️</span>
+      <div>
+        <strong>SYNTHETIC DEMONSTRATION FIXTURE:</strong>
+        This page uses synthetic offline test data to demonstrate relevance scoring, quality indicators, clutter reduction, and heuristic link-risk protection. No live websites or real malware are accessed.
+      </div>
+    </div>
+
+    <!-- Interactive Simulator Toolbar -->
+    <div class="interactive-panel">
+      <div class="panel-header">
+        <div class="panel-title">🛡️ Friction Layer Test Console</div>
+        <div class="metric-pill" id="statusPill">Evaluating 6 Demo Items</div>
+      </div>
+      <div class="controls-row">
+        <div class="control-item">
+          <label for="cutoffSlider">Relevance Cutoff: <strong id="sliderReadout" class="text-teal">45%</strong></label>
+          <input type="range" id="cutoffSlider" min="0" max="100" value="45">
+        </div>
+        <button class="btn" id="btnToggleReveal">Reveal Filtered Items</button>
+        <button class="btn" id="btnSortQuality">Sort by Quality</button>
+        <button class="btn" id="btnResetFixture">Reset Original Order</button>
+      </div>
+    </div>
+
+    <!-- Active Query Presentation -->
+    <div style="margin-bottom: 14px; font-size: 14px; color: var(--text-muted);">
+      Simulated Search Query: <strong style="color: #f8fafc;">"javascript performance optimization tutorial"</strong>
+    </div>
+
+    <!-- Synthetic Search Results Container -->
+    <div class="results-container" id="resultsContainer">
+      <!-- Item 1: High Relevance & High Evidence -->
+      <div class="search-card" data-expected-relevance="high" data-orig-order="0">
+        <div class="result-domain">developer.mozilla.org › en-US › docs › Web › JavaScript</div>
+        <div>
+          <span class="badge badge-high" id="badge-1">88%</span>
+          <span class="badge badge-quality">High Evidence</span>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Performance" class="result-title">JavaScript Performance Optimization Tutorial: 10 Core Techniques</a>
+        </div>
+        <p class="result-snippet">Comprehensive guide detailing modern JavaScript performance optimization techniques, memory management, garbage collection, and Web Workers for fluid web applications.</p>
+      </div>
+
+      <!-- Item 2: Moderate Relevance & Moderate Evidence -->
+      <div class="search-card" data-expected-relevance="med" data-orig-order="1">
+        <div class="result-domain">web-engineering.example.org › js-speed</div>
+        <div>
+          <span class="badge badge-med" id="badge-2">62%</span>
+          <span class="badge badge-quality">Moderate Evidence</span>
+          <a href="https://web-engineering.example.org/js-speed" class="result-title">Speeding up JavaScript Code in Modern Browsers</a>
+        </div>
+        <p class="result-snippet">Tips and tricks for diagnosing bottlenecks using browser profiling tools, reducing DOM thrashing, and implementing efficient event delegation.</p>
+      </div>
+
+      <!-- Item 3: Low Relevance / Off-Topic SEO Spam (Should be hidden when cutoff > 30) -->
+      <div class="search-card" data-expected-relevance="low" data-orig-order="2">
+        <div class="result-domain">discount-travel-deals.example.com › flights</div>
+        <div>
+          <span class="badge badge-low" id="badge-3">12%</span>
+          <span class="badge badge-quality">Limited Evidence</span>
+          <a href="https://discount-travel-deals.example.com/flights" class="result-title">Best Holiday Deals, Cheap Flights and Hotels for 2026</a>
+        </div>
+        <p class="result-snippet">Book exclusive low-cost airline tickets, discount vacation packages, and rental cars across the world with 24/7 customer support.</p>
+      </div>
+
+      <!-- Item 4: Suspicious Lookalike Typosquatting Link (Link-Risk Demonstration) -->
+      <div class="search-card" data-expected-relevance="low" data-orig-order="3">
+        <div class="result-domain">paypa1-security-update.example.com › download</div>
+        <div>
+          <span class="badge badge-low" id="badge-4">24%</span>
+          <span class="badge badge-risk" id="riskBadgeDemo" title="Click to view heuristic indicators">⚠️ Suspicious Link</span>
+          <a href="https://g00gle.com@paypa1-security-update.example.com/download" class="result-title">Free JavaScript IDE Download & Security Check</a>
+        </div>
+        <p class="result-snippet">Download accelerated development tools. (Notice: This synthetic result demonstrates Friction Layer's heuristic warning system for typosquatted brands and embedded credentials).</p>
+      </div>
+
+      <!-- Item 5: Commercial Sponsored Ad Block (Clutter Filter Demonstration) -->
+      <div class="search-card uEierd" data-clutter="sponsored" data-orig-order="4" style="border-color: #a21caf;">
+        <div class="result-domain">sponsored.telemetry-cloud.example.net</div>
+        <div>
+          <span class="badge badge-sponsored">Sponsored Ad</span>
+          <a href="https://sponsored.telemetry-cloud.example.net" class="result-title">Enterprise JavaScript Performance Cloud Monitoring</a>
+        </div>
+        <p class="result-snippet">Cloud observability platform with real-time CPU profiling, alerting, and automated anomaly detection for high-traffic websites.</p>
+      </div>
+
+      <!-- Item 6: Near-Duplicate Syndicated Title (Quality Uniqueness Demonstration) -->
+      <div class="search-card" data-expected-relevance="high" data-orig-order="5">
+        <div class="result-domain">scraper-mirror.example.net › post › 9942</div>
+        <div>
+          <span class="badge badge-high" id="badge-6">84%</span>
+          <span class="badge badge-quality" style="border-color: var(--amber); color: var(--amber);">Duplicate Title</span>
+          <a href="https://scraper-mirror.example.net/post/9942" class="result-title">JavaScript Performance Optimization Tutorial: 10 Core Techniques</a>
+        </div>
+        <p class="result-snippet">Syndicated copy of article 1 with identical title and scraped snippet. Friction Layer's quality scorer detects title collisions to reduce repetitive search clutter.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load Core Modules for standalone execution -->
+  <script src="../../core/relevance-scorer.js"></script>
+  <script src="../../core/quality-scorer.js"></script>
+  <script src="../../core/link-risk.js"></script>
+
+  <script>
+    (function () {
+      const slider = document.getElementById('cutoffSlider');
+      const readout = document.getElementById('sliderReadout');
+      const btnReveal = document.getElementById('btnToggleReveal');
+      const btnSort = document.getElementById('btnSortQuality');
+      const btnReset = document.getElementById('btnResetFixture');
+      const statusPill = document.getElementById('statusPill');
+      const container = document.getElementById('resultsContainer');
+      const riskBadge = document.getElementById('riskBadgeDemo');
+
+      let isReveal = false;
+      const scores = [88, 62, 12, 24, 40, 84];
+      const cards = Array.from(document.querySelectorAll('.search-card'));
+
+      function applyFiltering() {
+        const threshold = parseInt(slider.value, 10);
+        readout.textContent = threshold + '%';
+        let hidden = 0;
+
+        cards.forEach((card, idx) => {
+          const score = scores[idx];
+          if (score < threshold) {
+            card.classList.add('friction-hidden');
+            hidden++;
+          } else {
+            card.classList.remove('friction-hidden');
+          }
+        });
+
+        statusPill.textContent = `${hidden} of 6 Results Filtered`;
+      }
+
+      slider.addEventListener('input', applyFiltering);
+
+      btnReveal.addEventListener('click', () => {
+        isReveal = !isReveal;
+        container.classList.toggle('reveal-mode', isReveal);
+        btnReveal.textContent = isReveal ? 'Re-Hide Filtered' : 'Reveal Filtered Items';
+      });
+
+      btnSort.addEventListener('click', () => {
+        const sorted = [...cards].sort((a, b) => {
+          const idxA = cards.indexOf(a);
+          const idxB = cards.indexOf(b);
+          return scores[idxB] - scores[idxA];
+        });
+        sorted.forEach(c => container.appendChild(c));
+      });
+
+      btnReset.addEventListener('click', () => {
+        const sorted = [...cards].sort((a, b) => {
+          return parseInt(a.getAttribute('data-orig-order'), 10) - parseInt(b.getAttribute('data-orig-order'), 10);
+        });
+        sorted.forEach(c => container.appendChild(c));
+      });
+
+      // Interactive risk badge alert
+      if (riskBadge) {
+        riskBadge.addEventListener('click', () => {
+          alert(
+            "⚠️ Friction Layer Heuristic Notice:\\n\\n" +
+            "Observed Destination: https://g00gle.com@paypa1-security-update.example.com/download\\n\\n" +
+            "Detected Heuristic Indicators:\\n" +
+            "1. USERINFO_CREDENTIALS: URL contains misleading username prefix ('g00gle.com@')\\n" +
+            "2. DECEPTIVE_LOOKALIKE: Domain imitates 'paypal' via leetspeak character substitution ('paypa1')\\n\\n" +
+            "Note: This is a local structural check. Your navigation is never silently blocked."
+          );
+        });
+      }
+
+      applyFiltering();
+    })();
+  </script>
+</body>
+</html>

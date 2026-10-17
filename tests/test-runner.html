@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Friction Layer - Automated Test Suite</title>
+  <style>
+    :root {
+      --bg: #0a1128;
+      --card: #0f172a;
+      --border: #334155;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --teal: #14b8a6;
+      --teal-glow: #2dd4bf;
+      --green: #10b981;
+      --red: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 32px;
+      line-height: 1.5;
+    }
+    .test-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+    }
+    .title h1 {
+      font-size: 22px;
+      color: var(--teal-glow);
+    }
+    .title p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .btn-run {
+      background: var(--teal);
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 13px;
+      transition: background 0.15s;
+    }
+    .btn-run:hover {
+      background: #0d9488;
+    }
+    .test-summary {
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+    }
+    .test-summary.all-passed {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid var(--green);
+      color: var(--green);
+    }
+    .test-summary.has-failures {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid var(--red);
+      color: var(--red);
+    }
+    .test-summary h2 {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+    .metrics {
+      display: flex;
+      gap: 16px;
+      font-size: 13px;
+      color: var(--text);
+    }
+    .passed-count { color: var(--green); }
+    .failed-count { color: var(--red); }
+    .suite-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+    .suite-title {
+      background: #1e293b;
+      padding: 10px 16px;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #38bdf8;
+      border-bottom: 1px solid var(--border);
+    }
+    .test-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      padding: 10px 16px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+      font-size: 13px;
+    }
+    .test-row:last-child {
+      border-bottom: none;
+    }
+    .test-row.pass .test-icon { color: var(--green); }
+    .test-row.fail .test-icon { color: var(--red); }
+    .test-icon {
+      width: 20px;
+      font-weight: bold;
+    }
+    .test-name {
+      flex: 1;
+      color: var(--text);
+    }
+    .test-time {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .test-error {
+      width: 100%;
+      background: #450a0a;
+      color: #fca5a5;
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 12px;
+      margin-top: 6px;
+      margin-left: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="test-container">
+    <div class="header">
+      <div class="title">
+        <h1>Friction Layer Automated Test Runner</h1>
+        <p>Zero-dependency unit & regression test suite</p>
+      </div>
+      <button class="btn-run" id="btnRerun">Re-run Tests</button>
+    </div>
+
+    <div id="test-output">
+      <p style="color: var(--text-muted);">Executing test suites...</p>
+    </div>
+  </div>
+
+  <!-- Core Modules -->
+  <script src="../core/messaging.js"></script>
+  <script src="../core/settings.js"></script>
+  <script src="../core/relevance-scorer.js"></script>
+  <script src="../core/quality-scorer.js"></script>
+  <script src="../core/recommendation-engine.js"></script>
+  <script src="../core/link-risk.js"></script>
+
+  <!-- Test Framework & Test Suites -->
+  <script src="test-runner.js"></script>
+  <script src="relevance-scorer.test.js"></script>
+  <script src="settings.test.js"></script>
+  <script src="link-risk.test.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      await FrictionTestRunner.runAll();
+
+      document.getElementById('btnRerun').addEventListener('click', async () => {
+        document.getElementById('test-output').innerHTML = '<p style="color: var(--text-muted);">Re-running test suites...</p>';
+        await FrictionTestRunner.runAll();
+      });
+    });
+  </script>
+</body>
+</html>
