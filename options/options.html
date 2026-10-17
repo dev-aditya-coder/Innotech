@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Friction Layer - Settings Dashboard</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <img src="../assets/icons/icon48.png" alt="Friction Layer Logo" width="36" height="36" class="sidebar-logo">
+        <div class="sidebar-brand-text">
+          <h2>Friction Layer</h2>
+          <span class="sidebar-version">v1.0.0 • Manifest V3</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-section="section-search">
+          <span class="nav-icon">🔍</span> Search Filtering
+        </button>
+        <button class="nav-item" data-section="section-recommendations">
+          <span class="nav-icon">📺</span> Recommendations
+        </button>
+        <button class="nav-item" data-section="section-quality">
+          <span class="nav-icon">💎</span> Quality Signals
+        </button>
+        <button class="nav-item" data-section="section-security">
+          <span class="nav-icon">🛡️</span> Link-Risk Protection
+        </button>
+        <button class="nav-item" data-section="section-clutter">
+          <span class="nav-icon">🧹</span> Clutter & Sponsored
+        </button>
+        <button class="nav-item" data-section="section-appearance">
+          <span class="nav-icon">🎨</span> Appearance & Theme
+        </button>
+        <button class="nav-item" data-section="section-privacy">
+          <span class="nav-icon">🔒</span> Privacy & Permissions
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="privacy-status-badge">
+          <span class="badge-dot"></span>
+          <span>100% Local Processing</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="content-area">
+      <!-- Top Bar -->
+      <header class="content-header">
+        <div class="header-titles">
+          <h1 id="pageTitle">Search Relevance Filtering</h1>
+          <p id="pageSubtitle" class="subtitle">Tune local intent estimation, threshold boundaries, and organic result presentation.</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary" id="btnResetDefaults">Reset Defaults</button>
+          <button class="btn btn-primary" id="btnSaveSettings">Save Preferences</button>
+        </div>
+      </header>
+
+      <!-- SECTIONS -->
+
+      <!-- 1. Search Settings Section -->
+      <section id="section-search" class="settings-section active">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3>Search Filtering Master</h3>
+              <p class="card-desc">Evaluate organic search results in real time and hide low-relevance clutter.</p>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="searchEnabled" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="card-body">
+            <!-- Threshold Slider -->
+            <div class="form-group">
+              <div class="slider-header">
+                <label for="searchThreshold">Relevance Cutoff Threshold</label>
+                <span class="slider-value" id="searchThresholdValue">45%</span>
+              </div>
+              <input type="range" id="searchThreshold" min="0" max="100" value="45" class="range-slider">
+              <div class="slider-ticks">
+                <span>0% (Permissive)</span>
+                <span>35% (Balanced)</span>
+                <span>50% (Recommended)</span>
+                <span>75% (Strict)</span>
+                <span>100% (Exact Only)</span>
+              </div>
+              <p class="form-help">Results scoring below this percentage are hidden reversibly. Changing this slider re-evaluates results on the current page immediately.</p>
+            </div>
+
+            <!-- Scoring Mode -->
+            <div class="form-group">
+              <label>Relevance Scoring Engine</label>
+              <div class="radio-card-group">
+                <label class="radio-card selected" id="labelLocalScoring">
+                  <input type="radio" name="searchScoringMode" value="local" checked>
+                  <div class="radio-card-content">
+                    <div class="radio-card-title">
+                      <span>⚡ Local Deterministic Engine</span>
+                      <span class="pill-badge pill-teal">Default • Privacy First</span>
+                    </div>
+                    <p class="radio-card-desc">Processes query terms, phrase match bonus, and title/snippet coverage 100% locally on your machine with zero network latency.</p>
+                  </div>
+                </label>
+
+                <label class="radio-card" id="labelSemanticScoring">
+                  <input type="radio" name="searchScoringMode" value="semantic">
+                  <div class="radio-card-content">
+                    <div class="radio-card-title">
+                      <span>🌐 Optional HTTPS Semantic Endpoint</span>
+                      <span class="pill-badge pill-amber">Advanced / External</span>
+                    </div>
+                    <p class="radio-card-desc">Delegates scoring to a private, user-configured external HTTPS backend. Requires an explicit endpoint URL.</p>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Semantic Endpoint Input (conditional) -->
+            <div class="form-group" id="semanticEndpointContainer" style="display: none;">
+              <label for="semanticEndpoint">Semantic Service HTTPS Endpoint</label>
+              <input type="url" id="semanticEndpoint" placeholder="https://api.example.com/v1/score" class="text-input">
+              <p class="form-help text-warning">⚠️ Note: If configured, only the query, title, and snippet will be sent. Browsing history and cookies are never transmitted. If the endpoint fails or times out (2.5s), Friction Layer automatically falls back to local scoring.</p>
+            </div>
+
+            <!-- Supported Domains -->
+            <div class="form-group">
+              <label for="searchSupportedDomains">Supported Search Domains (one per line)</label>
+              <textarea id="searchSupportedDomains" rows="3" class="text-area">www.google.com
+google.com</textarea>
+              <p class="form-help">Friction Layer monitors search result pages across these configured hostnames.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Recommendations Section -->
+      <section id="section-recommendations" class="settings-section">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3>YouTube Recommendation Filtering</h3>
+              <p class="card-desc">Reclaim your focus by hiding distracting feeds, algorithmic recommendations, and clickbait.</p>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="recEnabled">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="card-body">
+            <!-- Focus Mode -->
+            <div class="setting-row">
+              <div>
+                <label class="setting-title" for="recFocusMode">Focus Mode (Hide Entire Sidebar & Home Feed)</label>
+                <p class="setting-desc">Hides recommendation feeds automatically so you only watch intended videos or search results.</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="recFocusMode">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <!-- Filtering Strategy -->
+            <div class="form-group">
+              <label for="recStrategy">Filtering Strategy</label>
+              <select id="recStrategy" class="select-input">
+                <option value="keywords">Keyword Rules Only</option>
+                <option value="topics">Topic Clusters Only</option>
+                <option value="combined" selected>Combined (Keywords + Topic Clusters)</option>
+              </select>
+            </div>
+
+            <!-- Blocked Keywords -->
+            <div class="form-group">
+              <label for="recBlockedKeywords">Blocked Keywords (one per line)</label>
+              <textarea id="recBlockedKeywords" rows="3" class="text-area" placeholder="shocking&#10;reaction&#10;drama&#10;prank&#10;unboxing"></textarea>
+              <p class="form-help">Recommendations containing any of these keywords in the title or channel will be hidden.</p>
+            </div>
+
+            <!-- Blocked Topics -->
+            <div class="form-group">
+              <label for="recBlockedTopics">Blocked Topic Clusters (one per line)</label>
+              <textarea id="recBlockedTopics" rows="2" class="text-area" placeholder="clickbait&#10;shorts&#10;gaming&#10;celebrity&#10;crypto"></textarea>
+              <p class="form-help">Supported built-in clusters: <code>clickbait</code>, <code>shorts</code>, <code>gaming</code>, <code>politics</code>, <code>celebrity</code>, <code>crypto</code>.</p>
+            </div>
+
+            <!-- Allowed Channels -->
+            <div class="form-group">
+              <label for="recAllowedChannels">Channel Allowlist (one per line)</label>
+              <textarea id="recAllowedChannels" rows="2" class="text-area" placeholder="Khan Academy&#10;MIT OpenCourseWare&#10;Veritasium&#10;3Blue1Brown"></textarea>
+              <p class="form-help text-teal">✨ Allowlists take strict precedence! Recommendations from allowed channels are never blocked.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Quality Settings Section -->
+      <section id="section-quality" class="settings-section">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3>Evidence-Based Quality Indicators</h3>
+              <p class="card-desc">Inspect visible page-level signals without fabricating popularity or reputation data.</p>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="qualityEnabled" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="card-body">
+            <div class="form-group">
+              <label>Inspected Quality Signals</label>
+              <div class="checkbox-group">
+                <label class="checkbox-item">
+                  <input type="checkbox" id="signalMetadata" checked>
+                  <div>
+                    <span class="checkbox-label">Metadata Completeness</span>
+                    <span class="checkbox-desc">Validates structured title length, rich snippet presence, HTTPS origin, and publication date.</span>
+                  </div>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" id="signalRelevance" checked>
+                  <div>
+                    <span class="checkbox-label">Content Relevance Alignment</span>
+                    <span class="checkbox-desc">Requires high query term alignment from the local relevance scorer.</span>
+                  </div>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" id="signalDuplicate" checked>
+                  <div>
+                    <span class="checkbox-label">Syndication & Duplicate Detection</span>
+                    <span class="checkbox-desc">Detects repetitive or near-identical titles across search results indicating syndicated spam.</span>
+                  </div>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" id="signalSource" checked>
+                  <div>
+                    <span class="checkbox-label">Domain Hierarchy & Standards Signals</span>
+                    <span class="checkbox-desc">Recognizes authoritative top-level domains (.gov, .edu) and open documentation standards.</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Minimum Evidence -->
+            <div class="form-group">
+              <label for="qualityMinEvidence">Minimum Evidence Signals Required: <span id="qualityMinEvidenceVal" class="text-teal">2</span></label>
+              <input type="range" id="qualityMinEvidence" min="1" max="4" value="2" class="range-slider">
+              <p class="form-help">If fewer signals are verifiable on the page, the indicator displays "Insufficient data" rather than guessing.</p>
+            </div>
+
+            <!-- Local Sorting -->
+            <div class="setting-row">
+              <div>
+                <label class="setting-title" for="qualitySortResults">Local Quality-Based Reordering</label>
+                <p class="setting-desc">Reorders search results locally in the browser DOM by calculated evidence score. <em>(Does not alter Google's server ranking; reversible upon toggle.)</em></p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="qualitySortResults">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Security / Link Risk Section -->
+      <section id="section-security" class="settings-section">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3>Spam & Scam Link-Risk Protection</h3>
+              <p class="card-desc">Non-blocking, local heuristic checks for deceptive URLs, typosquatting, and obfuscated redirects.</p>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="securityEnabled" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="card-body">
+            <div class="form-group">
+              <label for="securityMode">Heuristic Inspection Sensitivity</label>
+              <select id="securityMode" class="select-input">
+                <option value="heuristic" selected>Calibrated Heuristics (Standard)</option>
+                <option value="strict">Strict (Flags Deep Subdomains & All Redirect Params)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Monitored Heuristic Signals</label>
+              <div class="signal-info-grid">
+                <div class="signal-card">
+                  <span class="signal-badge">Credential Abuse</span>
+                  <p>Detects user-info credentials preceding hostname (e.g. <code>https://brand@evil-site.com</code>).</p>
+                </div>
+                <div class="signal-card">
+                  <span class="signal-badge">Punycode / IDN</span>
+                  <p>Detects internationalized domains (<code>xn--</code>) often used in homograph visual deception.</p>
+                </div>
+                <div class="signal-card">
+                  <span class="signal-badge">Typosquatting</span>
+                  <p>Detects character substitution lookalikes (e.g. <code>paypa1.com</code>, <code>g00gle.com</code>).</p>
+                </div>
+                <div class="signal-card">
+                  <span class="signal-badge">Deep Subdomains</span>
+                  <p>Flags excessive subdomain nesting (>4 levels) combining sensitive keywords (login/banking).</p>
+                </div>
+                <div class="signal-card">
+                  <span class="signal-badge">Open Redirects</span>
+                  <p>Flags query parameters carrying external URLs designed for deceptive forwarding.</p>
+                </div>
+                <div class="signal-card">
+                  <span class="signal-badge">Obfuscated Encoding</span>
+                  <p>Flags double-percent encoding (%25) and URL path traversal attempts.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <div>
+                <label class="setting-title" for="securityShowExplanations">Show Interactive Explanation Dialogs</label>
+                <p class="setting-desc">Clicking a warning badge displays an explainable dialog with observed signals and copy-clean-URL action.</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="securityShowExplanations" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="callout callout-info">
+              <strong>Transparent Security Guarantee:</strong> Friction Layer never redirects, manipulates, or silently blocks your web destinations. All checks are executed locally using structural heuristics without requiring external threat-intelligence lookups.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. Clutter Section -->
+      <section id="section-clutter" class="settings-section">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3>Ad & Clutter Filtering</h3>
+              <p class="card-desc">Conservative, reversible filtering of explicitly marked sponsored elements and generic overlays.</p>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="clutterEnabled">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="card-body">
+            <div class="checkbox-group">
+              <label class="checkbox-item">
+                <input type="checkbox" id="clutterHideSponsored" checked>
+                <div>
+                  <span class="checkbox-label">Hide Explicitly Marked Sponsored Blocks</span>
+                  <span class="checkbox-desc">Targets standard top/bottom Google search ads and YouTube sponsored promotion banners.</span>
+                </div>
+              </label>
+
+              <label class="checkbox-item">
+                <input type="checkbox" id="clutterHideOverlays">
+                <div>
+                  <span class="checkbox-label">Dismiss Generic Cookie / Consent Banners</span>
+                  <span class="checkbox-desc">Suppresses generic dismissible consent prompts where non-critical. Never touches login or payment forms.</span>
+                </div>
+              </label>
+
+              <label class="checkbox-item">
+                <input type="checkbox" id="clutterReduceSidebars">
+                <div>
+                  <span class="checkbox-label">Reduce Repetitive Trending Sidebars</span>
+                  <span class="checkbox-desc">Hides repetitive promotional shelf components in secondary sidebars.</span>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. Appearance Section -->
+      <section id="section-appearance" class="settings-section">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3>Appearance & Theme</h3>
+              <p class="card-desc">Customize interface visual theme and extension behavior.</p>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div class="form-group">
+              <label for="themeSelect">Visual Theme</label>
+              <select id="themeSelect" class="select-input">
+                <option value="system" selected>System Default</option>
+                <option value="dark">Dark Navy & Teal (Recommended)</option>
+                <option value="light">Light Neutral</option>
+              </select>
+            </div>
+
+            <div class="setting-row">
+              <div>
+                <label class="setting-title" for="appearancePerSite">Per-Site Memory</label>
+                <p class="setting-desc">Remember manual 'Show Hidden' choices per browser tab session.</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="appearancePerSite" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. Privacy & Permissions Section -->
+      <section id="section-privacy" class="settings-section">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3>Privacy, Permissions & Diagnostics</h3>
+              <p class="card-desc">Zero telemetry, local processing by default, and transparent permission justification.</p>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div class="form-group">
+              <label>Required Chrome Permissions & Purpose</label>
+              <div class="permissions-list">
+                <div class="perm-card">
+                  <div class="perm-name"><code>storage</code></div>
+                  <div class="perm-desc">Persists your filtering rules, thresholds, and allowlists locally on your machine via <code>chrome.storage.local</code>.</div>
+                </div>
+                <div class="perm-card">
+                  <div class="perm-name"><code>activeTab</code></div>
+                  <div class="perm-desc">Allows the popup to inspect the current active tab and display real-time filtered item counts.</div>
+                </div>
+                <div class="perm-card">
+                  <div class="perm-name"><code>google.com, youtube.com</code></div>
+                  <div class="perm-desc">Limited strictly to Google Search and YouTube domains for content filtering. Friction Layer does not request broad access to all websites.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Data Management Actions</label>
+              <div class="data-actions-row">
+                <button class="btn btn-secondary" id="btnClearCache">Clear Local Scoring Cache</button>
+                <button class="btn btn-secondary text-danger" id="btnFullReset">Factory Reset All Settings</button>
+              </div>
+              <p class="form-help">Clearing cache resets cached relevance scores. Factory reset clears all custom keywords and restores original defaults.</p>
+            </div>
+
+            <div class="callout callout-teal">
+              <strong>Architecture Status:</strong> External AI Endpoint: <em>Not Configured (100% Offline Local Engine Active)</em>. External Threat Intel: <em>Not Configured (100% Local Structural Heuristics Active)</em>.
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="optionsToast"></div>
+
+  <script src="../core/messaging.js"></script>
+  <script src="../core/settings.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>
