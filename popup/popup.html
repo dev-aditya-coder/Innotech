@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Friction Layer</title>
+
+  <!-- ---------------------------------------------------------
+       Inline style – fixes the jumbled order for every label/value pair
+       ---------------------------------------------------------- -->
+  <style>
+    :root {
+      --bg-primary: #0a1128;
+      --bg-surface: #0f172a;
+      --bg-card: #1e293b;
+      --bg-card-hover: #24324a;
+      --border-color: #334155;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --teal-glow: #2dd4bf;
+      --teal-primary: #14b8a6;
+      --status-active: #10b981;
+      --status-paused: #f59e0b;
+      --status-unsupported: #64748b;
+    }
+
+    body {
+      width: 375px;
+      min-height: 520px;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, sans-serif;
+      font-size: 13px;
+      line-height: 1.4;
+      margin: 0;
+      padding: 0;
+    }
+
+    .popup-container {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* ----- STATUS CARD ------------------------------------------------- */
+    .status-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .status-metric-row {
+      display: flex;
+      gap: 8px;
+      border-top: 1px solid rgba(51, 65, 85, 0.5);
+      padding-top: 8px;
+    }
+
+    /* *** FIXED LAYOUT FOR LABEL + VALUE *** */
+    .metric-item {
+      flex: 1;
+      min-width: 0;
+      background: var(--bg-card);
+      border-radius: 6px;
+      padding: 6px 10px;
+
+      /* NEW: horizontal layout (label → value) */
+      display: flex;
+      flex-direction: row;      /* <‑‑ this makes label appear first */
+      align-items: baseline;    /* vertical alignment of text */
+      gap: 4px;                 /* space between label and number */
+    }
+
+    .metric-label {
+      font-size: 10px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+    }
+
+    .metric-value {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--teal-glow);
+    }
+
+    /* ------------------------------------------------------ */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 38px;
+      height: 22px;
+    }
+    .switch input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #334155;
+      transition: background-color .2s;
+      border-radius: 22px;
+    }
+    .slider::before {
+      position: absolute;
+      content: "";
+      height: 16px; width: 16px;
+      left: 3px; bottom: 3px;
+      background: #fff;
+      transition: transform .2s;
+      border-radius: 50%;
+      box-shadow: 0 1px 3px rgba(0,0,0,.3);
+    }
+    input:checked + .slider { background: var(--teal-primary); }
+    input:checked + .slider::before { transform: translateX(16px); }
+    /* ------------------------------------------------------ */
+  </style>
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Header -->
+    <header class="popup-header">
+      <div class="brand">
+        <img src="../assets/icons/icon32.png"
+             alt="Friction Layer Logo"
+             class="brand-logo"
+             width="28" height="28">
+        <div class="brand-text">
+          <div class="brand-title">
+            <span class="title-primary">Friction</span>
+            <span class="title-accent">Layer</span>
+          </div>
+          <span class="version-tag">v1.0.0</span>
+        </div>
+      </div>
+      <div class="master-switch-wrapper">
+        <label class="switch" title="Master toggle to enable or pause all Friction Layer features">
+          <input type="checkbox" id="masterToggle" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+    </header>
+
+    <!-- Status Card -->
+    <section class="status-card" id="statusCard">
+      <div class="status-indicator-row">
+        <div class="status-indicator">
+          <span class="status-dot" id="statusDot"></span>
+          <span class="status-text" id="statusText">Detecting page...</span>
+        </div>
+        <div class="page-type-badge" id="pageTypeBadge">Analyzing</div>
+      </div>
+
+      <div class="status-metric-row" id="metricRow">
+        <div class="metric-item">
+          <!-- **Label first, value second** (fixed order) -->
+          <span class="metric-value" id="hiddenCountMetric">0</span>
+          <span class="metric-label">Items Filtered</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-label">Mode</span>
+          <span class="metric-value" id="filterStatusMetric">Active</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Feature Switches -->
+    <section class="features-section">
+      <div class="section-title">Protective Layers</div>
+
+      <div class="feature-card">
+        <div class="feature-info">
+          <div class="feature-name">Search Relevance Filter</div>
+          <div class="feature-desc">Estimates query match &amp; hides low‑relevance results</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="toggleSearch" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-info">
+          <div class="feature-name">Recommendation Filter</div>
+          <div class="feature-desc">Blocks clickbait, keywords &amp; focus mode</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="toggleRecommendations">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-info">
+          <div class="feature-name">Quality Indicators</div>
+          <div class="feature-desc">Page‑level evidence &amp; optional DOM sorting</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="toggleQuality" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-info">
+          <div class="feature-name">Spam &amp; Scam Protection</div>
+          <div class="feature-desc">Heuristic warnings for deceptive URLs</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="toggleSecurity" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-info">
+          <div class="feature-name">Ad &amp; Clutter Filtering</div>
+          <div class="feature-desc">Hides marked sponsored blocks &amp; overlays</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="toggleClutter">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </section>
+
+    <!-- Actions -->
+    <section class="actions-section">
+      <button class="btn btn-secondary"
+              id="btnRestorePage"
+              title="Temporarily reveal all hidden elements on this page">
+        <span>👁️</span> Restore Hidden
+      </button>
+      <button class="btn btn-secondary"
+              id="btnReprocessPage"
+              title="Re‑evaluate all elements on the current page">
+        <span>🔄</span> Reprocess
+      </button>
+      <button class="btn btn-primary"
+              id="btnOpenOptions"
+              title="Configure thresholds, keywords, and privacy settings">
+        <span>⚙️</span> Settings
+      </button>
+    </section>
+
+    <div class="toast" id="popupToast"></div>
+
+    <footer class="popup-footer">
+      <span class="privacy-note">🔒 Local Processing • Zero Data Leaves Browser</span>
+    </footer>
+  </div>
+
+  <!-- Scripts (unchanged) -->
+  <script src="../core/messaging.js"></script>
+  <script src="../core/settings.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
