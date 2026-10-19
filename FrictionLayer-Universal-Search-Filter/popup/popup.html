@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FrictionLayer</title><link rel="stylesheet" href="popup.css"></head>
+<body><main class="panel">
+  <header class="brand"><div class="logo"><i></i><i></i><i></i></div><div><h1>FrictionLayer</h1><p>Search with intention.</p></div><span class="status" id="status">ON</span></header>
+  <section class="card master"><div><h2>Search filter</h2><p>Estimate relevance, reduce noise.</p></div><label class="switch"><input id="enabled" type="checkbox" checked aria-label="Enable FrictionLayer search filter"><span class="slider"></span></label></section>
+  <section class="card"><div class="row"><label for="cutoff">Relevance cutoff</label><strong id="cutoffValue">35%</strong></div><input id="cutoff" type="range" min="0" max="90" step="5" value="35"><div class="range-labels"><span>Show more</span><span>Filter more</span></div><label class="checkbox-row"><input id="hideBelowCutoff" type="checkbox"><span>Hide results below cutoff</span></label></section>
+  <section class="card feed-card">
+    <div class="row"><h2>YouTube feed filter</h2><label class="switch"><input id="feedEnabled" type="checkbox" aria-label="Enable YouTube feed filter"><span class="slider"></span></label></div>
+    <p>Show only feed content matching the selected categories or keywords. Everything else is hidden.</p>
+    <label class="field-label">Only show these categories</label>
+    <div class="category-list">
+      <label class="checkbox-row"><input id="blockStudy" type="checkbox"><span>Study</span></label>
+      <label class="checkbox-row"><input id="blockGaming" type="checkbox"><span>Gaming</span></label>
+      <label class="checkbox-row"><input id="blockMusic" type="checkbox"><span>Music</span></label>
+      <label class="checkbox-row"><input id="blockSports" type="checkbox"><span>Sports</span></label>
+      <label class="checkbox-row"><input id="blockNews" type="checkbox"><span>News</span></label>
+      <label class="checkbox-row"><input id="blockMoviesTV" type="checkbox"><span>Movies &amp; TV</span></label>
+      <label class="checkbox-row"><input id="blockTechnology" type="checkbox"><span>Technology</span></label>
+      <label class="checkbox-row"><input id="blockEntertainment" type="checkbox"><span>Entertainment (excluding games, music and sports)</span></label>
+    </div>
+    <p class="tiny-note">Only videos matching at least one selected category remain visible. Gaming, Music, and Sports are separate from Entertainment. If no category is selected, the full feed is shown.</p>
+    <button id="saveFeed" class="save-button" type="button">Save feed settings</button>
+    <p class="tiny-note">Category detection uses title and visible metadata keyword matching; it is a prototype, not AI understanding. When multiple categories are selected, matching any one is enough to show a video.</p>
+  </section>
+  <section class="card type-card">
+    <div class="row"><h2>Videos &amp; Shorts</h2><label class="switch"><input id="typeFilterEnabled" type="checkbox" aria-label="Enable video type filter"><span class="slider"></span></label></div>
+    <p>Choose which content type appears in YouTube feeds. This works independently of category filtering.</p>
+    <div class="type-options">
+      <label class="checkbox-row"><input id="showVideos" type="checkbox" checked><span>Regular videos</span></label>
+      <label class="checkbox-row"><input id="showShorts" type="checkbox" checked><span>YouTube Shorts</span></label>
+    </div>
+    <p class="tiny-note">Select Videos only or Shorts only to hide the other type. If neither is selected, all content types remain visible.</p>
+    <button id="saveTypeSettings" class="save-button" type="button">Save video type settings</button>
+  </section>
+  <aside class="note"><b>i</b><p>Filtering is reversible. Search filtering and feed blocking work independently.</p></aside>
+  <footer><span></span> Local processing · No search data uploaded</footer>
+</main><script src="popup.js"></script></body></html>

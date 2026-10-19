@@ -1,0 +1,66 @@
+{
+  "manifest_version": 3,
+  "name": "FrictionLayer \u2014 Universal Search & Feed Filter",
+  "version": "0.4.2",
+  "description": "Local search relevance filtering, category-based YouTube feed filtering, and independent video/Shorts type filtering.",
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://www.google.com/*",
+    "https://www.google.co.in/*",
+    "https://www.google.co.uk/*",
+    "https://www.google.ca/*",
+    "https://www.google.com.au/*",
+    "https://www.bing.com/*",
+    "https://duckduckgo.com/*",
+    "https://search.brave.com/*",
+    "https://search.yahoo.com/*",
+    "https://www.ecosia.org/*",
+    "https://www.youtube.com/*"
+  ],
+  "action": {
+    "default_title": "FrictionLayer Search Filter",
+    "default_popup": "popup/popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.google.com/*",
+        "https://www.google.co.in/*",
+        "https://www.google.co.uk/*",
+        "https://www.google.ca/*",
+        "https://www.google.com.au/*",
+        "https://www.bing.com/*",
+        "https://duckduckgo.com/*",
+        "https://search.brave.com/*",
+        "https://search.yahoo.com/*",
+        "https://www.ecosia.org/*",
+        "https://www.youtube.com/*"
+      ],
+      "js": [
+        "content/search-filter.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://www.youtube.com/*"
+      ],
+      "js": [
+        "content/feed-filter.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://www.youtube.com/*"
+      ],
+      "js": [
+        "content/video-type-filter.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}
