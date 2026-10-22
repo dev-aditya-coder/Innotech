@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customize — Friction Layer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+  <header class="site-header site-header-reference">
+    <a class="brand" href="index.html" aria-label="FrictionLayer home">
+      <span class="brand-mark"><span></span><span></span><span></span></span>
+      <span>Friction<span class="brand-light">Layer</span></span>
+    </a>
+    <button class="mobile-menu-toggle" aria-label="Toggle navigation"
+      aria-expanded="false"><span></span><span></span></button>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="customize.html">Customize</a>
+      <a href="focus.html">Focus Session</a>
+      <a href="download.html">Download</a>
+      <a href="index.html#features">About</a>
+      <button class="theme-toggle" type="button" aria-label="Switch theme"><span class="theme-icon">☾</span></button>
+      <a class="nav-cta" href="customize.html">Customize Your Experience <span aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
+  <main class="page-main section-shell">
+    <div class="page-intro reveal">
+      <div class="eyebrow"><span class="status-dot"></span> YOUR PERSONAL SETUP</div>
+      <h1>Set up your <span class="gradient-text">focus session.</span></h1>
+      <p>Choose the filtering preferences for your next focus session. They apply only while its timer is active and
+        reset when the session ends.</p>
+      <div class="progress-track"><span></span></div>
+      <div class="progress-caption"><span>SESSION CUSTOMIZATION</span><span>STEP 1 OF 1</span></div>
+    </div>
+    <div class="customize-layout">
+      <form class="preferences-form reveal" id="preferences-form">
+        <section class="form-section">
+          <div class="form-section-heading"><span class="section-number">01</span>
+            <div>
+              <h2>What's your main goal?</h2>
+              <p>Choose the goal for this focus session.</p>
+            </div>
+          </div>
+          <div class="choice-grid goal-grid">
+            <label class="choice-card selected"><input type="radio" name="goal" value="Study & Learning" checked><span
+                class="choice-icon">⌘</span><strong>Study &amp; Learning</strong><small>Understand concepts and
+                lessons</small><span class="choice-check">✓</span></label>
+            <label class="choice-card"><input type="radio" name="goal" value="Research & Projects"><span
+                class="choice-icon">⌕</span><strong>Research &amp; Projects</strong><small>Find useful, relevant
+                information</small><span class="choice-check">✓</span></label>
+            <label class="choice-card"><input type="radio" name="goal" value="Skill Development"><span
+                class="choice-icon">↗</span><strong>Skill Development</strong><small>Practice and build new
+                skills</small><span class="choice-check">✓</span></label>
+            <label class="choice-card"><input type="radio" name="goal" value="General Focused Browsing"><span
+                class="choice-icon">◎</span><strong>Focused Browsing</strong><small>Keep browsing aligned with
+                intent</small><span class="choice-check">✓</span></label>
+          </div>
+        </section>
+        <section class="form-section">
+          <div class="form-section-heading"><span class="section-number">02</span>
+            <div>
+              <h2>Choose your content level</h2>
+              <p>Set the content depth for this session only.</p>
+            </div>
+          </div>
+          <div class="segmented-options"><label><input type="radio" name="level"
+                value="Beginner"><span><b>Beginner</b><small>Start with the basics</small></span></label><label
+              class="selected"><input type="radio" name="level" value="Intermediate"
+                checked><span><b>Intermediate</b><small>Build on what I know</small></span></label><label><input
+                type="radio" name="level" value="Advanced"><span><b>Advanced</b><small>Go deeper</small></span></label>
+          </div>
+        </section>
+        <section class="form-section">
+          <div class="form-section-heading"><span class="section-number">03</span>
+            <div>
+              <h2>What should Friction Layer filter?</h2>
+              <p>These filters are temporary and end with the focus timer.</p>
+            </div>
+          </div>
+          <div class="toggle-list">
+            <div class="toggle-row">
+              <div class="toggle-symbol">⌕</div>
+              <div class="toggle-copy"><strong>Intent-based search filtering</strong>
+                <p>Prioritize results that appear to match your search intent.</p>
+              </div><label class="switch"><input type="checkbox" id="intent-filter" checked><span
+                  class="switch-track"></span><span class="sr-only">Enable intent-based search filtering</span></label>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-symbol">◉</div>
+              <div class="toggle-copy"><strong>Recommendation filtering</strong>
+                <p>Reduce recommendations that don't fit your selected focus.</p>
+              </div><label class="switch"><input type="checkbox" id="recommendation-filter" checked><span
+                  class="switch-track"></span><span class="sr-only">Enable recommendation filtering</span></label>
+            </div>
+          </div>
+        </section>
+        <section class="form-section">
+          <div class="form-section-heading"><span class="section-number">04</span>
+            <div>
+              <h2>How strict should it be?</h2>
+              <p>Choose how strict filtering should be during this session.</p>
+            </div>
+          </div>
+          <div class="strictness-options"><label><input type="radio" name="strictness" value="Relaxed"><span
+                class="strict-bar relaxed"><i></i><i></i><i></i></span><b>Relaxed</b><small>Keep more
+                results</small></label><label class="selected"><input type="radio" name="strictness" value="Balanced"
+                checked><span class="strict-bar balanced"><i></i><i></i><i></i></span><b>Balanced</b><small>A practical
+                middle ground</small></label><label><input type="radio" name="strictness" value="Strict"><span
+                class="strict-bar strict"><i></i><i></i><i></i></span><b>Strict</b><small>Prioritize close
+                matches</small></label></div>
+        </section>
+        <div class="form-actions">
+          <p><span class="privacy-mini">◇</span> These choices are temporary for your next focus session.</p><button
+            class="button button-primary" type="submit">Continue to Focus Session <span>↗</span></button>
+        </div>
+      </form>
+      <aside class="live-summary reveal reveal-delay-2">
+        <div class="summary-header"><span class="summary-pulse"></span><span>LIVE SUMMARY</span><span
+            class="live-tag">UPDATING</span></div>
+        <h3>Your session setup</h3>
+        <p class="summary-description">Here's how your current choices fit together.</p>
+        <div class="summary-main"><span class="summary-label">YOUR GOAL</span><strong id="summary-goal">Study &amp;
+            Learning</strong><span class="summary-label">CONTENT LEVEL</span><strong
+            id="summary-level">Intermediate</strong><span class="summary-label">FILTERING STRICTNESS</span><strong
+            id="summary-strictness">Balanced</strong></div>
+        <div class="summary-features">
+          <div><span>Intent filtering</span><b id="summary-intent" class="state-enabled">Enabled</b></div>
+          <div><span>Recommendations</span><b id="summary-recommendations" class="state-enabled">Enabled</b></div>
+        </div>
+        <div class="summary-note"><span>✳</span>
+          <p><strong>A quick note</strong><br>These settings apply temporarily while your focus timer is active. They
+            are restored when the session ends.</p>
+        </div>
+        <div class="summary-footer"><span class="status-dot"></span> Temporary session setup</div>
+      </aside>
+    </div>
+  </main>
+  <footer class="site-footer site-footer-pro">
+    <div class="footer-main">
+      <div class="footer-brand-block">
+        <a class="brand footer-brand" href="index.html" aria-label="FrictionLayer home">
+          <span class="brand-mark"><span></span><span></span><span></span></span>
+          <span>Friction<span class="brand-light">Layer</span></span>
+        </a>
+        <p>A browser extension concept to help you explore YouTube with more intent and fewer distractions.</p>
+      </div>
+      <div class="footer-column">
+        <h3>PRODUCT</h3>
+        <a href="index.html">Home</a>
+        <a href="index.html#features">Features</a>
+        <a href="customize.html">Customize</a>
+        <a href="focus.html">Focus Session</a>
+        <a href="download.html">Download &amp; Setup</a>
+      </div>
+      <div class="footer-column">
+        <h3>RESOURCES</h3>
+        <a href="download.html#installation-guide">How It Works</a>
+        <a href="download.html#faq">FAQ</a>
+        <a href="download.html#privacy">Privacy</a>
+        <a href="index.html#features">About FrictionLayer</a>
+      </div>
+      <div class="footer-cta">
+        <h3>GET STARTED</h3>
+        <p>Set your goals and get a personalized browsing experience.</p>
+        <a class="button button-primary" href="customize.html">Set up a focus session <span
+            aria-hidden="true">→</span></a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 FrictionLayer. All rights reserved.</span>
+      <div class="footer-legal"><a href="download.html#privacy">Privacy</a><a href="download.html#faq">FAQ</a><a
+          href="download.html#installation-guide">Setup</a></div>
+      <span class="footer-disclaimer">This is a prototype for educational purposes.</span>
+    </div>
+  </footer>
+  <div class="toast" role="status" aria-live="polite"></div>
+</body>
+
+</html>
